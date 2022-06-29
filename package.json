@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "react": "18.0.0",
-    "react-native": "0.69.0"
+    "react-native": "0.69.0",
+    "react-native-pager-view": "^5.4.24",
+    "react-native-reanimated": "^2.8.0",
+    "react-native-tab-view": "^3.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

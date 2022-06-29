@@ -8,52 +8,67 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
   useColorScheme,
   View,
 } from 'react-native';
+import {TabView} from 'react-native-tab-view';
+import type {Props as TabViewProps} from 'react-native-tab-view/lib/typescript/TabView';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {TabBar} from './src/components/TabBar';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const FirstRoute = () => (
+  <View
+    style={{
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.64)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+    <Text style={{color: 'white', fontSize: 24}}>First page</Text>
+  </View>
+);
 
-const Section: React.FC<{
-  children: React.ReactNode;
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+const SecondRoute = () => (
+  <View
+    style={{
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.64)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+    <Text style={{color: 'white', fontSize: 24}}>Second page</Text>
+  </View>
+);
+
+const tabRoutes = [
+  {key: 'first', title: 'First'},
+  {key: 'second', title: 'Second'},
+] as const;
+
+type TabRoutes = typeof tabRoutes;
+
+type TabViewRoute = {
+  key: TabRoutes[number]['key'];
+  title: TabRoutes[number]['title'];
+};
+
+type RenderSceneProps = Parameters<
+  TabViewProps<TabViewRoute>['renderScene']
+>[0];
+const renderScene = ({route}: RenderSceneProps) => {
+  switch (route.key) {
+    case 'first':
+      return <FirstRoute />;
+    case 'second':
+      return <SecondRoute />;
+    default:
+      return null;
+  }
 };
 
 const App = () => {
@@ -63,54 +78,22 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const [index, setIndex] = useState(0);
+  const [routes] = useState<TabViewRoute[]>(
+    tabRoutes as unknown as TabViewRoute[],
+  );
+
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={[backgroundStyle, {flex: 1}]}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+      <TabView<TabViewRoute>
+        navigationState={{index, routes}}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={props => <TabBar {...props} onIndexChange={setIndex} />}
+      />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
