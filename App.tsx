@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -37,7 +37,7 @@ const SecondRoute = () => (
   <View
     style={{
       flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.64)',
+      backgroundColor: '#171923',
       justifyContent: 'center',
       alignItems: 'center',
     }}>
@@ -45,9 +45,47 @@ const SecondRoute = () => (
   </View>
 );
 
+const ThirdRoute = () => (
+  <View
+    style={{
+      flex: 1,
+      backgroundColor: '#1A202C',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+    <Text style={{color: 'white', fontSize: 24}}>Third page</Text>
+  </View>
+);
+
+const FourthRoute = () => (
+  <View
+    style={{
+      flex: 1,
+      backgroundColor: '#2D3748',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+    <Text style={{color: 'white', fontSize: 24}}>Fourth page</Text>
+  </View>
+);
+const FifthRoute = () => (
+  <View
+    style={{
+      flex: 1,
+      backgroundColor: '#4A5568',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+    <Text style={{color: 'white', fontSize: 24}}>Fifth page</Text>
+  </View>
+);
+
 const tabRoutes = [
   {key: 'first', title: 'First'},
   {key: 'second', title: 'Second'},
+  {key: 'third', title: 'Third'},
+  {key: 'fourth', title: 'Fourth'},
+  {key: 'fifth', title: 'Fifth'},
 ] as const;
 
 type TabRoutes = typeof tabRoutes;
@@ -66,6 +104,12 @@ const renderScene = ({route}: RenderSceneProps) => {
       return <FirstRoute />;
     case 'second':
       return <SecondRoute />;
+    case 'third':
+      return <ThirdRoute />;
+    case 'fourth':
+      return <FourthRoute />;
+    case 'fifth':
+      return <FifthRoute />;
     default:
       return null;
   }

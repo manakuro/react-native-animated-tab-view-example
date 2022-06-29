@@ -17,9 +17,8 @@ export const TabBarItem = forwardRef<any, Props>((props, ref) => {
   return (
     <TouchableOpacity
       style={{paddingHorizontal: 16, paddingTop: 16, alignItems: 'center'}}
-      onPress={handlePress}
-      ref={ref}>
-      <View style={{paddingBottom: 4}}>
+      onPress={handlePress}>
+      <View style={{paddingBottom: 4}} ref={ref}>
         <Animated.Text
           style={{color: 'white', fontSize: 16, opacity: props.opacity}}>
           {props.children}

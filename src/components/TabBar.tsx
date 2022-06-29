@@ -27,28 +27,28 @@ export const TabBar = <T extends Route>(props: Props<T>) => {
   useEffect(() => {
     const measureValues: Measure[] = [];
 
-    refs.forEach(r => {
-      if (!r.current) {
-        return;
-      }
+    setTimeout(() => {
+      refs.forEach(r => {
+        if (!r.current) {
+          return;
+        }
 
-      r.current.measureLayout(
-        containerRef.current as any,
-        (x, y, width, height) => {
-          console.log('refs: ', x, y, width, height);
+        r.current.measureLayout(
+          containerRef.current as any,
+          (x, y, width, height) => {
+            measureValues.push({
+              x,
+              y,
+              width,
+              height,
+            });
+          },
+          () => {},
+        );
+      });
 
-          measureValues.push({
-            x,
-            y,
-            width,
-            height,
-          });
-        },
-        () => {},
-      );
+      setMeasures(measureValues);
     });
-
-    setMeasures(measureValues);
   }, [refs]);
 
   return (
